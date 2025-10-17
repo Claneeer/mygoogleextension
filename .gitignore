@@ -1,0 +1,11 @@
+# Dependências
+/node_modules
+
+# Build
+/dist
+/extension.zip
+
+# Relatórios e Logs
+/playwright-report/
+/test-results/
+npm-debug.log

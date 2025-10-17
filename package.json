@@ -1,0 +1,16 @@
+{
+  "name": "forcador-de-tema",
+  "version": "1.0.0",
+  "description": "Testes e build para a extensão Forçador de Tema.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-extension.mjs",
+    "test": "npx playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^24.8.1",
+    "archiver": "^7.0.1",
+    "typescript": "^5.0.0"
+  }
+}
