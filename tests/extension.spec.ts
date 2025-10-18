@@ -10,6 +10,10 @@ const __dirname = path.dirname(__filename);
 const pathToExtension = path.join(__dirname, '..', 'dist');
 
 test.describe('Testes da Extensão Forçador de Tema', () => {
-    // ... (O restante do código de teste permanece o mesmo da resposta anterior)
-    // A única mudança é a variável 'pathToExtension' acima.
+    test('deve carregar a extensão', async () => {
+        // Adicione a lógica do teste aqui, por exemplo:
+        const browser = await chromium.launch();
+        // ...código de teste para verificar o funcionamento da extensão...
+        await browser.close();
+    });
 });
