@@ -31,7 +31,6 @@ jobs:
 
       - name: Rodar Testes Playwright no Contêiner
         run: docker run --name test-container --ipc=host forcador-tema-tester
-        continue-on-error: true
 
       - name: Copiar relatório de testes do contêiner para o host
         if: always()
