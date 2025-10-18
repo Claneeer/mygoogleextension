@@ -24,8 +24,7 @@ jobs:
         run: npm install
 
       - name: Construir a Extensão
-        run: npm run build # Executa o nosso script para criar a pasta 'dist' e o .zip
-
+        run: npm run build 
       - name: Construir Imagem Docker
         run: docker build . -t forcador-tema-tester
 
@@ -43,4 +42,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: extensao-empacotada
-          path: extension.zip # O .zip já foi criado pelo script de build
+          path: dist/extension.zip 

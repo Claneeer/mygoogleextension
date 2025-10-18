@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  # Define o serviço de teste para a nossa extensão
+  e2e-tests:
+    # Constrói a imagem a partir do Dockerfile na pasta atual (.)
+    build: .
+
+    # Comando que será executado ao iniciar o container.
+    # Neste caso, ele não faz nada por padrão, pois vamos rodar
+    # os comandos manualmente.
+    command: tail -f /dev/null
+
+    # O '--ipc=host' é importante para o Chromium rodar sem problemas
+    # em alguns ambientes Docker.
+    ipc: host
+
+    # Monta o volume do relatório de testes para que possamos acessá-lo
+    # na nossa máquina local após a execução.
+    volumes:
+      - ./playwright-report:/app/playwright-report

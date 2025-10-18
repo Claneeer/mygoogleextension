@@ -5,7 +5,7 @@ import archiver from 'archiver';
 
 const SOURCE_DIR = './';
 const DEST_DIR = './dist';
-const ZIP_FILE = './extension.zip';
+const ZIP_FILE = './dist/extension.zip';
 
 // Lista de arquivos e pastas a serem copiados para a pasta de distribuição
 const filesToCopy = [
