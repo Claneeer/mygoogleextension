@@ -26,11 +26,17 @@ jobs:
       - name: Construir a Extensão
         run: npm run build
 
+      - name: Listar arquivos APÓS o build (Debug)
+        run: ls -R
+        
       - name: Construir Imagem Docker
         run: docker build . -t forcador-tema-tester
 
-      - name: Rodar Testes Playwright no Contêiner
-        run: docker run --rm --ipc=host forcador-tema-tester
+      - name: Rodar Testes Playwright no Contêiner (COM VOLUME)
+        run: docker run --rm --ipc=host -v ${{ github.workspace }}/playwright-report:/app/playwright-report forcador-tema-tester
+
+      - name: Listar arquivos APÓS os testes (Debug)
+        run: ls -R
 
       - name: Publicar Relatório de Testes
         uses: actions/upload-artifact@v4
@@ -38,10 +44,6 @@ jobs:
         with:
           name: relatorio-de-testes
           path: playwright-report/
-
-      
-      - name: Listar arquivos para depuração
-        run: ls -R 
 
       - name: Publicar Extensão Empacotada
         uses: actions/upload-artifact@v4
