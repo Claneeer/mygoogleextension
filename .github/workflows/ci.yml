@@ -26,7 +26,7 @@ jobs:
       # Build do PWA (necessário para o Dockerfile do Nginx)
       - name: Build PWA
         run: cd apps/web && npm run build
-        
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -39,7 +39,7 @@ jobs:
         run: npx playwright install --with-deps
       
       - name: Iniciar serviços com Docker Compose
-        run: docker-compose up -d --build
+        run: docker compose up -d --build
         
       - name: Esperar serviços
         run: |
@@ -52,7 +52,7 @@ jobs:
         
       - name: Parar serviços
         if: always()
-        run: docker-compose down
+        run: docker compose down
 
       - name: Upload Relatório Playwright
         if: always()
