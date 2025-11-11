@@ -26,6 +26,13 @@ jobs:
       # Build do PWA (necessário para o Dockerfile do Nginx)
       - name: Build PWA
         run: cd apps/web && npm run build
+        
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Enable Docker Compose v2
+        run: echo "DOCKER_COMPOSE_V2=1" >> $GITHUB_ENV
 
       # Testes E2E (Playwright) com Docker Compose
       - name: Instalar browsers do Playwright
