@@ -1,63 +1,41 @@
-# Extensão Forçador de Tema (Claro/Escuro)
+# Bootcamp PWA (Derivado do Forçador de Tema)
 
-Uma extensão para o Google Chrome que permite ao usuário forçar um tema escuro em qualquer site, melhorando a experiência de navegação em ambientes com pouca luz.
+Este projeto é a Entrega III, convertendo a lógica de um "Forçador de Tema" em um PWA completo com backend próprio, orquestrado com Docker Compose e integrado com CI/CD.
 
-## ✨ Funcionalidades
+## 🚀 Arquitetura
 
-- **Alternância Simples:** Ative ou desative o modo escuro com um único clique no popup.
-- **Persistência Global:** Sua escolha de tema é salva e aplicada automaticamente a todas as abas e sites que você visitar.
-- **Inteligência de Mídia:** O modo escuro inverte as cores do site, mas mantém as cores de imagens e vídeos intactas.
+-   `/apps/web`: O PWA (Vite + React) que consome a API.
+-   `/apps/api`: O Backend (Node + Express) que fornece os dados.
+-   `/docker-compose.yml`: Orquestra os serviços `web` e `api`.
+-   `/tests`: Testes E2E (Playwright) que validam o PWA e a integração com a API.
 
-## 🚀 Instalação (Modo Desenvolvedor)
-
-1.  Baixe este repositório (via `git clone` ou [baixando o .zip](https://www.mediafire.com/file/r2th2pb5q9dmb9o/Exten%25C3%25A7%25C3%25A3o.rar/file)).
-2.  Abra o Google Chrome e navegue até `chrome://extensions`.
-3.  Ative o **Modo de Desenvolvedor**.
-4.  Clique em **"Carregar sem compactação"** e selecione a pasta do projeto.
-5.  O ícone de sol/lua aparecerá na sua barra de ferramentas!
-
----
-
-## 🛠️ Para Desenvolvedores
-
-Este projeto utiliza Docker para criar um ambiente de desenvolvimento e teste consistente e reprodutível.
-
-### Pré-requisitos
-
-* [Node.js](https://nodejs.org/) (v20 ou superior)
-* [Docker](https://www.docker.com/products/docker-desktop/)
-* [Git](https://git-scm.com/)
-
-### Como Construir e Testar Localmente
+## 🛠️ Como Rodar Localmente (com Docker)
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/Claneeer/mygoogleextension.git](https://github.com/Claneeer/mygoogleextension.git)
-    cd mygoogleextension-main
+    git clone [SEU_REPO_URL]
+    cd [SEU_REPO]
     ```
 
-2.  **Instale as dependências do projeto:**
+2.  **Suba os serviços:**
+    Este comando irá construir as imagens e iniciar os containers do PWA e da API.
     ```bash
-    npm install
+    docker-compose up --build
     ```
 
-3.  **Execute o build da extensão:**
-    Este comando irá criar a pasta `dist/` com os arquivos da extensão e o arquivo `dist/extension.zip`.
+3.  **Acesse:**
+    * **PWA (Frontend):** `http://localhost:8080`
+    * **API (Backend):** `http://localhost:3000/api/hello`
+
+## 🧪 Como Rodar os Testes
+
+1.  Certifique-se de que os serviços estão rodando (com `docker-compose up -d`).
+2.  Execute os testes Playwright:
     ```bash
-    npm run build
+    npx playwright test
     ```
 
-4.  **Execute os testes end-to-end com Docker Compose:**
-    Este comando irá construir a imagem Docker e rodar a suíte de testes do Playwright em um contêiner isolado.
-    ```bash
-    docker-compose run --rm e2e-tests npx playwright test
-    ```
-    Ao final, um relatório de testes será gerado na pasta `playwright-report/`.
+## 🌐 Deploy
 
-## ⚠️ Permissões
-
-Esta extensão requer permissão para **acessar dados de todos os sites** (`host_permissions`) para poder aplicar os estilos de tema. Ela não lê ou armazena nenhum dado de navegação.
-
-## ⚖️ Licença
-
-Distribuído sob a licença MIT.
+O PWA está publicado automaticamente via GitHub Actions e disponível em:
+[LINK_DO_SEU_GITHUB_PAGES_AQUI]
