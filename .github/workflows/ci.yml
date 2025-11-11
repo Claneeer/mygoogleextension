@@ -45,7 +45,7 @@ jobs:
         run: |
           echo "Aguardando 20s para os serviços subirem..."
           sleep 20
-          docker-compose ps
+          docker compose ps
       
       - name: Executar Testes Playwright
         run: npx playwright test
