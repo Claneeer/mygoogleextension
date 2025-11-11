@@ -1,11 +1,12 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests', // Pasta onde os testes estão
+  testDir: './tests',
   fullyParallel: true,
-  reporter: 'html', // Gera um relatório HTML após a execução
+  reporter: 'html',
   use: {
-    headless: true, // Roda sem abrir a janela do navegador (ideal para CI)
+    baseURL: 'http://localhost:8080', // Adicione esta linha!
+    headless: true,
     trace: 'on-first-retry',
   },
 });

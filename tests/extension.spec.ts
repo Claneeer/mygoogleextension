@@ -1,19 +1,16 @@
-import { test, expect, chromium } from '@playwright/test';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { test, expect } from '@playwright/test';
 
-// Recria o '__dirname' para funcionar em Módulos ES
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// O baseURL será pego do playwright.config.ts
 
-// Aponta para a pasta de build 'dist', agora da forma correta
-const pathToExtension = path.join(__dirname, '..', 'dist');
+test('PWA carrega e consome API', async ({ page }) => {
+  await page.goto('/'); // Vai para a baseURL
+  await expect(page).toHaveTitle(/Bootcamp/); // Mude "Bootcamp" para o title do seu PWA
 
-test.describe('Testes da Extensão Forçador de Tema', () => {
-    test('deve carregar a extensão', async () => {
-        // Adicione a lógica do teste aqui, por exemplo:
-        const browser = await chromium.launch();
-        // ...código de teste para verificar o funcionamento da extensão...
-        await browser.close();
-    });
+  // Espera pelo seletor que prova que a API foi chamada com sucesso
+  // (o data-testid que adicionamos no Passo 2)
+  await page.waitForSelector('[data-testid="api-ok"]');
+
+  // Opcional: testar o clique no botão de tema
+  await page.click('#toggleThemeBtn');
+  await expect(page.locator('body')).toHaveClass(/dark-mode/);
 });

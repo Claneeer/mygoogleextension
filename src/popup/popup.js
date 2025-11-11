@@ -11,16 +11,13 @@ function updateButtonState(theme) {
   }
 }
 
-// Ao carregar o popup, pega o tema salvo no storage e atualiza o botão
-document.addEventListener('DOMContentLoaded', async () => {
-  const { theme } = await chrome.storage.local.get('theme');
-  updateButtonState(theme || 'light'); // Padrão para 'light' se não definido
-});
-
-// Ao clicar no botão, envia uma mensagem para o service worker para alternar o tema
-toggleThemeBtn.addEventListener('click', async () => {
-  const response = await chrome.runtime.sendMessage({ type: 'TOGGLE_THEME' });
-  if (response && response.newTheme) {
-    updateButtonState(response.newTheme);
-  }
-});
+async function fetchApiData() {
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  const response = await fetch(`${API_URL}/api/hello`);
+  const data = await response.json();
+  // Exiba data.msg em algum lugar na tela
+  document.getElementById('api-message').textContent = data.msg;
+  // Adicione um data-testid para o Playwright
+  document.getElementById('api-message').setAttribute('data-testid', 'api-ok');
+}
+fetchApiData(); // Chame isso no load ou no clique

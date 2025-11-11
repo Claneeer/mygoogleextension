@@ -1,52 +1,92 @@
-name: CI - Build, Teste e Empacotamento da Extensão
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+name: CI
+on: [push, pull_request]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
 
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
+      # Instalar deps (assumindo package.json em cada app e um no root para Playwright)
+      - name: Instalar deps (Root)
+        run: npm ci
+      - name: Instalar deps (API)
+        run: cd apps/api && npm ci
+      - name: Instalar deps (Web)
+        run: cd apps/web && npm ci
 
-      - name: Instalar Dependências
-        run: npm install
+      # Testes Unitários
+      - name: Testes Unitários (API)
+        run: cd apps/api && npm test --if-present
+      - name: Testes Unitários (Web)
+        run: cd apps/web && npm test --if-present
 
-      - name: Construir a Extensão
-        run: npm run build
+      # Build do PWA (necessário para o Dockerfile do Nginx)
+      - name: Build PWA
+        run: cd apps/web && npm run build
 
-      - name: Listar arquivos APÓS o build (Debug)
-        run: ls -R
+      # Testes E2E (Playwright) com Docker Compose
+      - name: Instalar browsers do Playwright
+        run: npx playwright install --with-deps
+      
+      - name: Iniciar serviços com Docker Compose
+        run: docker-compose up -d --build
         
-      - name: Construir Imagem Docker
-        run: docker build . -t forcador-tema-tester
-
-      - name: Rodar Testes Playwright no Contêiner (COM VOLUME)
-        run: docker run --rm --ipc=host -v ${{ github.workspace }}/playwright-report:/app/playwright-report forcador-tema-tester
-
-      - name: Listar arquivos APÓS os testes (Debug)
-        run: ls -R
-
-      - name: Publicar Relatório de Testes
-        uses: actions/upload-artifact@v4
+      - name: Esperar serviços
+        run: |
+          echo "Aguardando 20s para os serviços subirem..."
+          sleep 20
+          docker-compose ps
+      
+      - name: Executar Testes Playwright
+        run: npx playwright test
+        
+      - name: Parar serviços
         if: always()
+        run: docker-compose down
+
+      - name: Upload Relatório Playwright
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: relatorio-de-testes
+          name: relatorio-playwright
           path: playwright-report/
 
-      - name: Publicar Extensão Empacotada
+      - name: Upload Artefato PWA (para deploy)
         uses: actions/upload-artifact@v4
         with:
-          name: extensao-empacotada
-          path: dist/extension.zip
+          name: web-dist
+          path: apps/web/dist
+
+  deploy-pages:
+    # Só faz deploy se o build-and-test passar E se for na branch 'main'
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main'
+    
+    # Permissões para o action de deploy
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Download do artefato 'web-dist'
+        uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: ./dist
+          
+      - name: Upload para GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+          
+      - name: Deploy no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
