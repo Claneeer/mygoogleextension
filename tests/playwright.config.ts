@@ -3,7 +3,7 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './tests', // Pasta onde os testes estão
   fullyParallel: true,
-  reporter: 'jsx', // Gera um relatório HTML após a execução
+  reporter: 'html', // Gera um relatório HTML após a execução
   use: {
     // ADICIONE ESTA LINHA:
     baseURL: 'http://localhost:8080', // URL base do PWA em desenvolvimento
