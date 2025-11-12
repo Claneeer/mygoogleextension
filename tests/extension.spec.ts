@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test';
 // O baseURL será pego do playwright.config.ts
 
 test('PWA carrega e consome API', async ({ page }) => {
-  await page.goto('/'); // Vai para a baseURL
-  await expect(page).toHaveTitle(/Bootcamp/); // Mude "Bootcamp" para o title do seu PWA
+  await page.goto('localhost3000/api/app'); // Vai para a baseURL
+  await expect(page).toHaveTitle(/api/); // Mude "Bootcamp" para o title do seu PWA
 
   // Espera pelo seletor que prova que a API foi chamada com sucesso
   // (o data-testid que adicionamos no Passo 2)
