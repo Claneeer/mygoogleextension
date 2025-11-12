@@ -13,5 +13,5 @@ test('PWA carrega e consome API', async ({ page }) => {
 
   // Opcional: testar o clique no botão de tema
   await page.click('#toggleThemeBtn');
-  await expect(page.locator('body')).toHaveClass("dark-theme");
+  await expect(page.locator('body')).toHaveClass("dark");
 });
