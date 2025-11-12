@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 // O baseURL será pego do playwright.config.ts
 
 test('PWA carrega e consome API', async ({ page }) => {
-  await page.goto('/'); // Vai para a baseURL
+  await page.goto('/apps/web/src/App'); // Vai para a baseURL
   await expect(page).toHaveTitle(/vite\+react/); // Mude "Bootcamp" para o title do seu PWA
 
   // Espera pelo seletor que prova que a API foi chamada com sucesso
