@@ -40,3 +40,17 @@
 .read-the-docs {
   color: #888;
 }
+
+body.dark {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+body.dark .container {
+  background-color: #2d2d2d;
+}
+
+body.dark button {
+  background-color: #444;
+  color: #fff;
+}

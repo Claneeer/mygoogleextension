@@ -1,41 +1,64 @@
-# Bootcamp PWA (Derivado do Forçador de Tema)
+# Projeto PWA - Bootcamp (Derivado de: mygoogleextension)
 
-Este projeto é a Entrega III, convertendo a lógica de um "Forçador de Tema" em um PWA completo com backend próprio, orquestrado com Docker Compose e integrado com CI/CD.
+[![Actions Status](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/workflows/ci.yml/badge.svg)](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/workflows/ci.yml)
 
-## 🚀 Arquitetura
+Conversão da extensão [nome da extensão original] para um Progressive Web App (PWA) funcional, como parte da avaliação do Bootcamp.
 
--   `/apps/web`: O PWA (Vite + React) que consome a API.
--   `/apps/api`: O Backend (Node + Express) que fornece os dados.
--   `/docker-compose.yml`: Orquestra os serviços `web` e `api`.
--   `/tests`: Testes E2E (Playwright) que validam o PWA e a integração com a API.
+**Link do PWA (GitHub Pages):** [COLE A URL DO SEU GITHUB PAGES AQUI]
 
-## 🛠️ Como Rodar Localmente (com Docker)
+---
 
-1.  **Clone o repositório:**
+## 🚀 Arquitetura do Projeto
+
+Este projeto é um monorepo contendo dois serviços principais, orquestrados com Docker Compose:
+
+-   `apps/web`: O PWA (Progressive Web App) desenvolvido com [Vite/React ou Vanilla, etc.].
+-   `apps/api`: O backend (API) desenvolvido com [Node/Express, etc.].
+
+## 🐳 Como Rodar Localmente (com Docker Compose)
+
+Para executar o projeto completo (PWA e API) localmente, você precisa ter o Docker e o Docker Compose instalados.
+
+1.  Clone este repositório:
     ```bash
-    git clone [SEU_REPO_URL]
-    cd [SEU_REPO]
+    git clone [URL_DO_SEU_REPO]
+    cd [NOME_DO_REPO]
     ```
 
-2.  **Suba os serviços:**
-    Este comando irá construir as imagens e iniciar os containers do PWA e da API.
+2.  Suba os contêineres:
     ```bash
     docker-compose up --build
     ```
 
-3.  **Acesse:**
-    * **PWA (Frontend):** `http://localhost:8080`
-    * **API (Backend):** `http://localhost:3000/api/hello`
+3.  Acesse os serviços:
+    -   **PWA (Web):** `http://localhost:8080`
+    -   **API (Backend):** `http://localhost:3000`
 
-## 🧪 Como Rodar os Testes
+## ⚙️ Endpoints da API
 
-1.  Certifique-se de que os serviços estão rodando (com `docker-compose up -d`).
-2.  Execute os testes Playwright:
-    ```bash
-    npx playwright test
-    ```
+O backend (`apps/api`) expõe os seguintes endpoints:
 
-## 🌐 Deploy
+-   **GET `/api/hello`**
+    -   Descrição: Endpoint de teste que retorna uma mensagem de boas-vindas.
+    -   Exemplo de Resposta:
+        ```json
+        { "ok": true, "msg": "Hello Bootcamp!" }
+        ```
+-   **[ADICIONE OUTROS ENDPOINTS DA SUA API AQUI]**
 
-O PWA está publicado automaticamente via GitHub Actions e disponível em:
-[LINK_DO_SEU_GITHUB_PAGES_AQUI]
+## 🧪 Testes
+
+O projeto inclui testes unitários e E2E (Playwright).
+
+Para executar os testes (requer `npm install` dentro de `apps/web` e `apps/api` primeiro):
+
+```bash
+# Testes da API
+cd apps/api
+npm test --if-present
+cd ../..
+
+# Testes do PWA
+cd apps/web
+npm test --if-present
+cd ../..
