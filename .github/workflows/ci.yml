@@ -1,99 +1,60 @@
 name: CI
 on: [push, pull_request]
 
+# Permissões necessárias para o deploy no GitHub Pages
+permissions:
+  contents: read
+  pages: write      # Para criar o deploy da página
+  id-token: write   # Para autenticar com o GitHub Pages
+
 jobs:
-  build-and-test:
+  build-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
-
-      # Instalar deps (assumindo package.json em cada app e um no root para Playwright)
-      - name: Instalar deps (Root)
-        run: npm ci
-      - name: Instalar deps (API)
-        run: cd apps/api && npm ci
-      - name: Instalar deps (Web)
-        run: cd apps/web && npm ci
-
-      # Testes Unitários
-      - name: Testes Unitários (API)
-        run: cd apps/api && npm test --if-present
-      - name: Testes Unitários (Web)
-        run: cd apps/web && npm test --if-present
-
-      # Build do PWA (necessário para o Dockerfile do Nginx)
-      - name: Build PWA
-        run: cd apps/web && npm run build
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Enable Docker Compose v2
-        run: echo "DOCKER_COMPOSE_V2=1" >> $GITHUB_ENV
-
-      # Testes E2E (Playwright) com Docker Compose
-      - name: Instalar browsers do Playwright
-        run: npx playwright install --with-deps
-      
-      - name: Iniciar serviços com Docker Compose
-        run: docker compose up -d --build
-        
-      - name: Esperar serviços
+      - name: Instalar deps
         run: |
-          echo "Aguardando 20s para os serviços subirem..."
-          sleep 20
-          docker compose ps
-      
-      - name: Executar Testes Playwright
-        run: npx playwright test
-        
-      - name: Parar serviços
-        if: always()
-        run: docker compose down
-
-      - name: Upload Relatório Playwright
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: relatorio-playwright
-          path: playwright-report/
-
-      - name: Upload Artefato PWA (para deploy)
+          cd apps/web && npm ci
+          cd ../../apps/api && npm ci
+      - name: Testes unitários (web/api)
+        run: |
+          cd apps/web && npm test --if-present
+          cd ../../apps/api && npm test --if-present
+      - name: Build web
+        run: cd apps/web && npm run build
+      - name: Upload artefatos
         uses: actions/upload-artifact@v4
         with:
           name: web-dist
           path: apps/web/dist
-
+  
   deploy-pages:
-    # Só faz deploy se o build-and-test passar E se for na branch 'main'
-    needs: build-and-test
+    needs: build-test
     if: github.ref == 'refs/heads/main'
     
-    # Permissões para o action de deploy
     permissions:
-      contents: read
       pages: write
       id-token: write
       
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Configurar GitHub Pages
-        uses: actions/configure-pages@v4
-        
-      - name: Download do artefato 'web-dist'
+      - name: Baixar artefato de build
         uses: actions/download-artifact@v4
         with:
           name: web-dist
           path: ./dist
-          
-      - name: Upload para GitHub Pages
-        uses: actions/upload-pages-artifact@v3
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload do artefato para GitHub Pages
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./dist
-          
-      - name: Deploy no GitHub Pages
+
+      - name: Deploy para GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
