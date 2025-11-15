@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/popup.css"/>
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
@@ -12,19 +13,11 @@
 
   </head>
   <body>
-    <div id="root"></div>
-        <div className="container">
-      <h3>Forçador de Tema (PWA)</h3>
-      <p>Alterne o tema para este PWA.</p>
-      
-      <button 
-        id="toggleThemeBtn" 
-        onClick={handleToggleTheme}
-        className={currentTheme === 'dark' ? 'dark-mode-btn' : 'light-mode-btn'}
-      >
-        {currentTheme === 'dark' ? 'Ativar Modo Claro' : 'Ativar Modo Escuro'}
-      </button>
+        <div class="container">
+        <h3>Forçador de Tema</h3>
+        <p>Alterne o tema para a aba atual e futuras navegações.</p>
+        <button id="toggleThemeBtn">Carregando...</button>
     </div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script src="popup.js"></script>
   </body>
 </html>
