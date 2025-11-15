@@ -13,6 +13,18 @@
   </head>
   <body>
     <div id="root"></div>
+        <div className="container">
+      <h3>Forçador de Tema (PWA)</h3>
+      <p>Alterne o tema para este PWA.</p>
+      
+      <button 
+        id="toggleThemeBtn" 
+        onClick={handleToggleTheme}
+        className={currentTheme === 'dark' ? 'dark-mode-btn' : 'light-mode-btn'}
+      >
+        {currentTheme === 'dark' ? 'Ativar Modo Claro' : 'Ativar Modo Escuro'}
+      </button>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
