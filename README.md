@@ -4,9 +4,9 @@
 
 Conversão da extensão [nome da extensão original] para um Progressive Web App (PWA) funcional, como parte da avaliação do Bootcamp.
 
-**Link do PWA (GitHub Pages):** [COLE A URL DO SEU GITHUB PAGES AQUI]
+**Link do PWA (GitHub Pages):**(https://claneeer.github.io/mygoogleextension/)
 
----
+--- **video:** (https://drive.google.com/file/d/10A-VziYHErXWWLF26AQDaaKP_Md3jMXA/view?usp=sharing)
 
 ## 🚀 Arquitetura do Projeto
 
@@ -21,8 +21,8 @@ Para executar o projeto completo (PWA e API) localmente, você precisa ter o Doc
 
 1.  Clone este repositório:
     ```bash
-    git clone [URL_DO_SEU_REPO]
-    cd [NOME_DO_REPO]
+    git clone https://github.com/Claneeer/mygoogleextension
+    cd https://github.com/Claneeer/mygoogleextension.git
     ```
 
 2.  Suba os contêineres:
